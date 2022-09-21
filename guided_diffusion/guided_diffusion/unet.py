@@ -452,7 +452,7 @@ class UNetModel(nn.Module):
             num_heads_upsample = num_heads
 
         self.image_size = image_size
-        self.in_channels = in_channels
+        self.in_channels = 7#in_channels
         self.model_channels = model_channels
         self.out_channels = out_channels
         self.num_res_blocks = num_res_blocks
@@ -631,7 +631,7 @@ class UNetModel(nn.Module):
         self.middle_block.apply(convert_module_to_f32)
         self.output_blocks.apply(convert_module_to_f32)
 
-    def forward(self, x, timesteps, y=None):
+    def forward(self, x, sketch, stroke, timesteps, y=None, ref_img=None):
         """
         Apply the model to an input batch.
 
@@ -650,6 +650,8 @@ class UNetModel(nn.Module):
         if self.num_classes is not None:
             assert y.shape == (x.shape[0],)
             emb = emb + self.label_emb(y)
+
+        x = th.cat((x, sketch, stroke), 1)
 
         h = x.type(self.dtype)
         for module in self.input_blocks:
