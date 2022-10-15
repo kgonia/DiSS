@@ -11,8 +11,9 @@ import torch as th
 import torch.distributed as dist
 import torch.nn.functional as F
 
-from guided_diffusion import dist_util, logger
-from guided_diffusion.script_util import (
+from guided_diffusion.guided_diffusion import dist_util
+from guided_diffusion.guided_diffusion import logger
+from guided_diffusion.guided_diffusion.script_util import (
     NUM_CLASSES,
     model_and_diffusion_defaults,
     classifier_defaults,
